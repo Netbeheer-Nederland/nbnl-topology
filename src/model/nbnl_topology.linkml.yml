@@ -9,13 +9,65 @@ imports:
 prefixes:
   linkml: https://w3id.org/linkml/
   cim: https://cim.ucaiug.io/ns#
-  dcterms: http://purl.org/dc/terms/
-  nbnl-term: https://begrippen.netbeheernederland.nl/id/
-  unit: http://qudt.org/vocab/unit/
+  dct: http://purl.org/dc/terms/
+  cbs: https://www.cbs.nl/nl-nl/onze-diensten/methoden/begrippen/
+  eu: https://cim.ucaiug.io/ns/eu#
+  nl: https://cim.ucaiug.io/ns/nl#
+  skos: http://www.w3.org/2004/02/skos/core#
+  xsd: http://www.w3.org/2001/XMLSchema#
 annotations:
   model_uri: https://modellen.netbeheernederland.nl/nbnl-topology
   exchange_format: application/ld+json
   model_type: data-product
-types: {}
-enums: {}
-classes: {}
+classes:
+  TopologicalNode:
+    description: |-
+      For a detailed substation model a topological node is a set of
+      connectivity nodes that, in the current network state, are connected
+      together through any type of closed switches, including  jumpers.
+      Topological nodes change as the current network state changes (i.e.,
+      switches, breakers, etc. change state).
+
+      For a planning model, switch statuses are not used to form topological
+      nodes.  Instead they are manually created or deleted in a model builder
+      tool. Topological nodes maintained this way are also called _busses_.
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Topology
+    is_a: IdentifiedObject
+    attributes:
+      Terminal:
+        description: The terminals associated with the topological node. This can
+          be used as an alternative to the connectivity node path to terminal, thus
+          making it unnecessary to model connectivity nodes in some cases. Note that
+          if connectivity nodes are in the model, this association would probably
+          not be used as an input specification.
+        slot_uri: cim:TopologicalNode.Terminal
+        range: curie
+        required: true
+        multivalued: true
+    class_uri: cim:TopologicalNode
+    tree_root: true
+  IdentifiedObject:
+    description: This is a root class to provide common identification for all classes
+      needing identification and naming attributes.
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Core
+    attributes:
+      mRID:
+        description: "Master resource identifier issued by a model authority. The\
+          \ mRID is unique within an exchange context. Global uniqueness is easily\
+          \ achieved by using a UUID, as specified in RFC 4122, for the mRID. The\
+          \ use of UUID is strongly recommended.\r\nFor CIMXML data files in RDF syntax\
+          \ conforming to IEC 61970-552, the mRID is mapped to rdf:ID or rdf:about\
+          \ attributes that identify CIM object elements."
+        slot_uri: cim:IdentifiedObject.mRID
+        range: string
+        identifier: true
+        required: true
+        multivalued: false
+      name:
+        description: "The name is any free human readable and possibly non unique\
+          \ text naming the object.\r\n"
+        slot_uri: cim:IdentifiedObject.name
+        range: string
+        required: false
+        multivalued: false
+    class_uri: cim:IdentifiedObject

@@ -1,0 +1,30 @@
+'@context':
+  linkml: https://w3id.org/linkml/
+  cim: https://cim.ucaiug.io/ns#
+  dct: http://purl.org/dc/terms/
+  gh: https://github.com/
+  cbs: https://www.cbs.nl/nl-nl/onze-diensten/methoden/begrippen/
+  eu: https://cim.ucaiug.io/ns/eu#
+  nbnl: https://begrippen.netbeheernederland.nl/energiesysteembeheer/nl/page/
+  nl: https://cim.ucaiug.io/ns/nl#
+  skos: http://www.w3.org/2004/02/skos/core#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  github: https://github.com/
+  dcterms: http://purl.org/dc/terms/
+'@id': urn:uuid:2808ccf7-c19c-4b96-aa65-7e21c2425458
+'dcterms:title': 'Example JSON-LD instance data'
+'dcterms:issued':
+  '@value': 2025-12-05T12:34:567Z
+  '@type': xsd:date
+'dcterms:publisher':
+  '@id': urn:uuid:4f74c8e2-adb5-4815-9607-eb00fb6a0d55
+  'dcterms:title': 'Liander'
+'dcterms:references':
+  - '@id': urn:uuid:2808ccf7-c19c-4b96-aa65-7e21c2425458
+'@graph':
+  - '@id': urn:uuid:4b56b177-9ab3-4b8a-ae44-996ab9f30c64
+    '@type': cim:TopologicalNode
+    cim:TopologicalNode.Terminal:
+      - urn:uuid:f0e1f8a2-65b6-4c67-8cc9-bba95247719d
+      - urn:uuid:9cb3631f-86b6-47b7-992c-3109829a818a
+    cim:IdentifiedObject.mRID: 4b56b177-9ab3-4b8a-ae44-996ab9f30c64
