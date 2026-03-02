@@ -1,0 +1,8 @@
+# Changes here will be overwritten by Copier
+_commit: '0.6'
+_src_path: gh:Netbeheer-Nederland/template-dp
+description: Information model for the data product "NBNL Topology"
+exchange_format: JSON-LD
+git_protocol: SSH
+name: nbnl-topology
+title: NBNL Topology (TP)
