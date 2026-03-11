@@ -15,6 +15,7 @@ prefixes:
   nl: https://cim.ucaiug.io/ns/nl#
   skos: http://www.w3.org/2004/02/skos/core#
   xsd: http://www.w3.org/2001/XMLSchema#
+  vocab: https://modellen.netbeheernederland.nl/nbnl-topology/
 annotations:
   model_uri: https://modellen.netbeheernederland.nl/nbnl-topology
   exchange_format: application/ld+json
@@ -59,6 +60,8 @@ classes:
       \ in general requires use of an equivalent branch."
     from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Wires
     is_a: Conductor
+    exact_mappings:
+    - vocab:verbinding
     class_uri: cim:ACLineSegment
   EnergyConsumer:
     description: "Generic user of energy - a  point of consumption on the power system\
@@ -67,6 +70,8 @@ classes:
       \ or if LoadResponseCharacteristic.exponentModel is set to False."
     from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Wires
     is_a: EnergyConnection
+    exact_mappings:
+    - vocab:aangeslotene
     class_uri: cim:EnergyConsumer
   IdentifiedObject:
     description: This is a root class to provide common identification for all classes
