@@ -46,6 +46,28 @@ classes:
         multivalued: true
     class_uri: cim:TopologicalNode
     tree_root: true
+  ACLineSegment:
+    description: "A wire or combination of wires, with consistent electrical characteristics,\
+      \ building a single electrical system, used to carry alternating current between\
+      \ points in the power system.\r\nFor symmetrical, transposed three phase lines,\
+      \ it is sufficient to use attributes of the line segment, which describe impedances\
+      \ and admittances for the entire length of the segment.  Additionally impedances\
+      \ can be computed by using length and associated per length impedances.\r\n\
+      The BaseVoltage at the two ends of ACLineSegments in a Line shall have the same\
+      \ BaseVoltage.nominalVoltage. However, boundary lines may have slightly different\
+      \ BaseVoltage.nominalVoltages and variation is allowed. Larger voltage difference\
+      \ in general requires use of an equivalent branch."
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Wires
+    is_a: Conductor
+    class_uri: cim:ACLineSegment
+  EnergyConsumer:
+    description: "Generic user of energy - a  point of consumption on the power system\
+      \ model.\r\nEnergyConsumer.pfixed, .qfixed, .pfixedPct and .qfixedPct have meaning\
+      \ only if there is no LoadResponseCharacteristic associated with EnergyConsumer\
+      \ or if LoadResponseCharacteristic.exponentModel is set to False."
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Wires
+    is_a: EnergyConnection
+    class_uri: cim:EnergyConsumer
   IdentifiedObject:
     description: This is a root class to provide common identification for all classes
       needing identification and naming attributes.
@@ -71,3 +93,111 @@ classes:
         required: false
         multivalued: false
     class_uri: cim:IdentifiedObject
+  Equipment:
+    description: The parts of a power system that are physical devices, electronic
+      or mechanical.
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Core
+    is_a: PowerSystemResource
+    attributes:
+      aggregate:
+        description: "The aggregate flag provides an alternative way of representing\
+          \ an aggregated (equivalent) element. It is applicable in cases when the\
+          \ dedicated classes for equivalent equipment do not have all of the attributes\
+          \ necessary to represent the required level of detail.  In case the flag\
+          \ is set to \u201Ctrue\u201D the single instance of equipment represents\
+          \ multiple pieces of equipment that have been modelled together as an aggregate\
+          \ equivalent obtained by a network reduction procedure. Examples would be\
+          \ power transformers or synchronous machines operating in parallel modelled\
+          \ as a single aggregate power transformer or aggregate synchronous machine.\
+          \  \r\nThe attribute is not used for EquivalentBranch, EquivalentShunt and\
+          \ EquivalentInjection."
+        slot_uri: cim:Equipment.aggregate
+        range: boolean
+        required: false
+        multivalued: false
+    class_uri: cim:Equipment
+  ContingencyEquipment:
+    description: Equipment whose in service status is to change, such as a power transformer
+      or AC line segment.
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Contingency
+    is_a: ContingencyElement
+    attributes:
+      Equipment:
+        description: The single piece of equipment to which to apply the contingency.
+        slot_uri: cim:ContingencyEquipment.Equipment
+        range: ACLineSegment
+        required: true
+        multivalued: false
+    class_uri: cim:ContingencyEquipment
+  PowerSystemResource:
+    description: A power system resource (PSR) can be an item of equipment such as
+      a switch, an equipment container containing many individual items of equipment
+      such as a substation, or an organisational entity such as sub-control area.
+      Power system resources can have measurements associated.
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Core
+    is_a: IdentifiedObject
+    attributes:
+      Location:
+        slot_uri: cim:PowerSystemResource.Location
+        range: curie
+        required: false
+        multivalued: false
+        description: Location of this power system resource.
+    class_uri: cim:PowerSystemResource
+  ContingencyElement:
+    description: 'An element of a system event to be studied by contingency analysis,
+      representing a change in status of a single piece of equipment. '
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Contingency
+    is_a: IdentifiedObject
+    attributes:
+      Contingency:
+        slot_uri: cim:ContingencyElement.Contingency
+        range: curie
+        required: true
+        multivalued: false
+        description: A contingency element belongs to one contingency.
+    abstract: true
+    class_uri: cim:ContingencyElement
+  Conductor:
+    description: 'Combination of conducting material with consistent electrical characteristics,
+      building a single electrical system, used to carry current between points in
+      the power system.  '
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Wires
+    is_a: ConductingEquipment
+    class_uri: cim:Conductor
+  ConductingEquipment:
+    description: The parts of the AC power system that are designed to carry current
+      or that are conductively connected through terminals.
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Core
+    is_a: Equipment
+    class_uri: cim:ConductingEquipment
+  EnergyConnection:
+    description: A connection of energy generation or consumption on the power system
+      model.
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Wires
+    is_a: ConductingEquipment
+    class_uri: cim:EnergyConnection
+  Terminal:
+    class_uri: cim:Terminal
+    is_a: ACDCTerminal
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Core
+    description: An AC electrical connection point to a piece of conducting equipment.
+      Terminals are connected at physical connection points called connectivity nodes.
+    attributes:
+      ConductingEquipment:
+        slot_uri: cim:Terminal.ConductingEquipment
+        any_of:
+        - range: EnergyConsumer
+        - range: ACLineSegment
+        required: true
+        multivalued: false
+        description: The conducting equipment of the terminal. Conducting equipment
+          have  terminals that may be connected to other conducting equipment terminals
+          via connectivity nodes or topological nodes.
+  ACDCTerminal:
+    class_uri: cim:ACDCTerminal
+    is_a: IdentifiedObject
+    from_schema: https://cim.ucaiug.io/ns#TC57CIM.IEC61970.Base.Core
+    description: An electrical connection point (AC or DC) to a piece of conducting
+      equipment. Terminals are connected at physical connection points called connectivity
+      nodes.

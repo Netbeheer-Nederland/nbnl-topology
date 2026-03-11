@@ -82,9 +82,17 @@ legend: "" {
 
 direction: down
 
+ACLineSegment.class: grid
+ContingencyEquipment.class: grid
+EnergyConsumer.class: grid
 Terminal.class: grid
 TopologicalNode.class: grid
+Location.class: grid
 
+ContingencyEquipment -> ACLineSegment
+Terminal -> ACLineSegment
+Terminal -> EnergyConsumer
+EnergyConsumer -> Location
 TopologicalNode -> Terminal
 ----
 
